@@ -1,0 +1,11 @@
+.idea
+./data_preprocessing/
+!./data_preprocessing/*.py
+!./data_preprocessing/*.sh
+/data/as/
+/data/cityu/
+/data/msr/
+/data/pku/
+/data_preprocessing/icwb2-data/
+/data_preprocessing/LDC07T36/
+/data/ctb6/
