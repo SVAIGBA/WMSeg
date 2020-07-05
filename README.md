@@ -19,7 +19,7 @@ Run `run_demo.sh` to train a model on the small sample data.
 
 We use [SIGHAN2005](http://sighan.cs.uchicago.edu/bakeoff2005/) and [CTB6](https://catalog.ldc.upenn.edu/LDC2007T36) in our paper.
 
-To obtain and pre-process the data, please goto `data_preprocessing` directory and run `getdata.sh` under that directory. This script will download and process the official data from SIGHAN2005. For CTB6, you need to obtain the official data first, and then put the `LDC07T36` directory under the `data_preprocessing` directory.
+To obtain and pre-process the data, please go to `data_preprocessing` directory and run `getdata.sh` under that directory. This script will download and process the official data from SIGHAN2005. For CTB6, you need to obtain the official data first, and then put the `LDC07T36` directory under the `data_preprocessing` directory.
 
 All processed data will appear in `data` directory.
 
