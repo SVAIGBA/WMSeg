@@ -15,4 +15,4 @@ python data_preprocessing.py --dataset=sighan2005 --translate
 # please obtain CTB6 https://catalog.ldc.upenn.edu/LDC2007T36
 
 # process CTB6
-python data_preprocessing.py --dataset=ctb6 --translate
+python data_preprocessing.py --dataset=ctb6

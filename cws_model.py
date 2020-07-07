@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function
 
 
 import os
-import random
 
 import math
 
@@ -106,6 +105,8 @@ class WMSeg(nn.Module):
 
         if args.decoder == 'crf':
             self.crf = CRF(tagset_size=self.num_labels-3, gpu=True)
+        else:
+            self.crf = None
    
     def forward(self, input_ids, token_type_ids=None, attention_mask=None, labels=None, valid_ids=None,
             attention_mask_label=None, word_seq=None, label_value_matrix=None, word_mask=None,

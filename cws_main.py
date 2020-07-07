@@ -5,29 +5,20 @@ import json
 import logging
 import os
 import random
-import re
-import subprocess
-from os import path
 
 import numpy as np
 import torch
 import torch.nn.functional as F
-from pytorch_pretrained_bert.file_utils import PYTORCH_PRETRAINED_BERT_CACHE
 
 from pytorch_pretrained_bert.optimization import BertAdam, WarmupLinearSchedule
-from pytorch_pretrained_bert.tokenization import BertTokenizer
 
 from tqdm import tqdm, trange
-from torch.nn import CrossEntropyLoss
 from seqeval.metrics import classification_report
 from cws_helper import get_word2id, get_gram2id
 from cws_eval import eval_sentence, cws_evaluate_word_PRF, cws_evaluate_OOV
 from cws_model import WMSeg
 import datetime
 
-from pytorch_pretrained_bert.crf import CRF
-
-#
 
 def train(args):
 
@@ -334,13 +325,13 @@ def train(args):
                             torch.save({
                                 'spec': seg_model.module.spec,
                                 'state_dict': seg_model.module.state_dict(),
-                                'trainer': optimizer.state_dict(),
+                                # 'trainer': optimizer.state_dict(),
                             }, best_eval_model_path)
                         else:
                             torch.save({
                                 'spec': seg_model.spec,
                                 'state_dict': seg_model.state_dict(),
-                                'trainer': optimizer.state_dict(),
+                                # 'trainer': optimizer.state_dict(),
                             }, best_eval_model_path)
                 else:
                     num_of_no_improvement += 1

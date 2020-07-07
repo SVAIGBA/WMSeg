@@ -173,7 +173,7 @@ if __name__ == '__main__':
                         default=None,
                         type=str,
                         required=True,
-                        help="The input data dir. Should contain the .tsv files (or other data files) for the task.")
+                        help="The dataset. Should be one of \'sighan2005\' and \'ctb6\'.")
 
     parser.add_argument("--translate",
                         action='store_true',

@@ -4,16 +4,23 @@ This is the implementation of [Improving  Chinese  WordSegmentation  with  Wordh
 
 We will keep updating this repository these days.
 
+## Requirements
+
+Our code works with the following environment.
+* `python=3.6`
+* `pytorch=1.1`
+
 ## Downloading BERT and ZEN
 
 In our paper, we use BERT ([paper](https://www.aclweb.org/anthology/N19-1423/)) and ZEN ([paper](https://arxiv.org/abs/1911.00720)) as the encoder.
 
 For BERT, please download pre-trained BERT-Base Chinese from [Google](https://github.com/google-research/bert) or from [HuggingFace](https://s3.amazonaws.com/models.huggingface.co/bert/bert-base-chinese.tar.gz). If you download it from Google, you need to convert the model from TensorFlow version to PyTorch version.
 
-For ZEN, please download the pre-trained model form [here](https://github.com/sinovation/ZEN).
-## Demo
+For ZEN, you can download the pre-trained model form [here](https://github.com/sinovation/ZEN).
 
-Run `run_demo.sh` to train a model on the small sample data.  
+## Run on Sample Data
+
+Run `run_sample.sh` to train a model on the small sample data under the `sample_data` directory.
 
 ## Datasets
 
@@ -25,7 +32,7 @@ All processed data will appear in `data` directory.
 
 ## Training and Testing
 
-You can find `run.sh` gives the command lines to train and test model on a specific dataset.
+You can find the command lines to train and test model on a specific dataset in `run.sh`.
 
 Here are some important parameters:
 
