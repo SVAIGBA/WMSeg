@@ -92,12 +92,14 @@ def train(args):
     label_list = ["O", "B", "I", "E", "S", "[CLS]", "[SEP]"]
     label_map = {label: i for i, label in enumerate(label_list, 1)}
 
-    seg_model = WMSeg(word2id, gram2id, label_map, args)
+    hpara = WMSeg.init_hyper_parameters(args)
+    seg_model = WMSeg(word2id, gram2id, label_map, hpara, args)
 
     train_examples = seg_model.load_data(args.train_data_path, flag='train')
-    eval_examples = seg_model.load_data(args.eval_data_path, flag='dev')
+    eval_examples = seg_model.load_data(args.eval_data_path, flag='test')
     num_labels = seg_model.num_labels
     convert_examples_to_features = seg_model.convert_examples_to_features
+    feature2input = seg_model.feature2input
 
     total_params = sum(p.numel() for p in seg_model.parameters() if p.requires_grad)
     logger.info('# of trainable parameters: %d' % total_params)
@@ -186,7 +188,7 @@ def train(args):
                     continue
                 train_features = convert_examples_to_features(batch_examples)
                 input_ids, input_mask, l_mask, label_ids, matching_matrix, ngram_ids, ngram_positions, \
-                segment_ids, valid_ids, word_ids, word_mask = feature2input(args, device, train_features)
+                segment_ids, valid_ids, word_ids, word_mask = feature2input(device, train_features)
 
                 loss, _ = seg_model(input_ids, segment_ids, input_mask, label_ids, valid_ids, l_mask, word_ids,
                                     matching_matrix, word_mask, ngram_ids, ngram_positions)
@@ -230,7 +232,7 @@ def train(args):
                     eval_features = convert_examples_to_features(eval_batch_examples)
 
                     input_ids, input_mask, l_mask, label_ids, matching_matrix, ngram_ids, ngram_positions, \
-                    segment_ids, valid_ids, word_ids, word_mask = feature2input(args, device, eval_features)
+                    segment_ids, valid_ids, word_ids, word_mask = feature2input(device, eval_features)
 
                     with torch.no_grad():
                         _, tag_seq = seg_model(input_ids, segment_ids, input_mask, labels=label_ids,
@@ -350,46 +352,6 @@ def train(args):
                 f.write('\n')
 
 
-def feature2input(args, device, feature):
-    all_input_ids = torch.tensor([f.input_ids for f in feature], dtype=torch.long)
-    all_input_mask = torch.tensor([f.input_mask for f in feature], dtype=torch.long)
-    all_segment_ids = torch.tensor([f.segment_ids for f in feature], dtype=torch.long)
-    all_label_ids = torch.tensor([f.label_id for f in feature], dtype=torch.long)
-    all_valid_ids = torch.tensor([f.valid_ids for f in feature], dtype=torch.long)
-    all_lmask_ids = torch.tensor([f.label_mask for f in feature], dtype=torch.long)
-    input_ids = all_input_ids.to(device)
-    input_mask = all_input_mask.to(device)
-    segment_ids = all_segment_ids.to(device)
-    label_ids = all_label_ids.to(device)
-    valid_ids = all_valid_ids.to(device)
-    l_mask = all_lmask_ids.to(device)
-    if args.use_memory:
-        all_word_ids = torch.tensor([f.word_ids for f in feature], dtype=torch.long)
-        all_matching_matrix = torch.tensor([f.matching_matrix for f in feature], dtype=torch.long)
-        all_word_mask = torch.tensor([f.matching_matrix for f in feature], dtype=torch.float)
-
-        word_ids = all_word_ids.to(device)
-        matching_matrix = all_matching_matrix.to(device)
-        word_mask = all_word_mask.to(device)
-    else:
-        word_ids = None
-        matching_matrix = None
-        word_mask = None
-    if args.use_zen:
-        all_ngram_ids = torch.tensor([f.ngram_ids for f in feature], dtype=torch.long)
-        all_ngram_positions = torch.tensor([f.ngram_positions for f in feature], dtype=torch.long)
-        # all_ngram_lengths = torch.tensor([f.ngram_lengths for f in train_features], dtype=torch.long)
-        # all_ngram_seg_ids = torch.tensor([f.ngram_seg_ids for f in train_features], dtype=torch.long)
-        # all_ngram_masks = torch.tensor([f.ngram_masks for f in train_features], dtype=torch.long)
-
-        ngram_ids = all_ngram_ids.to(device)
-        ngram_positions = all_ngram_positions.to(device)
-    else:
-        ngram_ids = None
-        ngram_positions = None
-    return input_ids, input_mask, l_mask, label_ids, matching_matrix, ngram_ids, ngram_positions, segment_ids, valid_ids, word_ids, word_mask
-
-
 def test(args):
 
     if args.local_rank == -1 or args.no_cuda:
@@ -405,13 +367,13 @@ def test(args):
         device, n_gpu, bool(args.local_rank != -1), args.fp16))
 
     seg_model_checkpoint = torch.load(args.eval_model)
-    seg_model = WMSeg.from_spec(seg_model_checkpoint['spec'], seg_model_checkpoint['state_dict'])
+    seg_model = WMSeg.from_spec(seg_model_checkpoint['spec'], seg_model_checkpoint['state_dict'], args)
 
     eval_examples = seg_model.load_data(args.eval_data_path, flag='test')
     convert_examples_to_features = seg_model.convert_examples_to_features
+    feature2input = seg_model.feature2input
     num_labels = seg_model.num_labels
     word2id = seg_model.word2id
-    model_arg = seg_model.spec['args']
     label_map = {v: k for k, v in seg_model.labelmap.items()}
 
     if args.fp16:
@@ -442,7 +404,7 @@ def test(args):
         eval_features = convert_examples_to_features(eval_batch_examples)
 
         input_ids, input_mask, l_mask, label_ids, matching_matrix, ngram_ids, ngram_positions, \
-        segment_ids, valid_ids, word_ids, word_mask = feature2input(model_arg, device, eval_features)
+        segment_ids, valid_ids, word_ids, word_mask = feature2input(device, eval_features)
 
         with torch.no_grad():
             _, tag_seq = seg_model(input_ids, segment_ids, input_mask, labels=label_ids,
@@ -494,99 +456,7 @@ def test(args):
 
 def predict(args):
 
-    if args.local_rank == -1 or args.no_cuda:
-        device = torch.device("cuda" if torch.cuda.is_available() and not args.no_cuda else "cpu")
-        n_gpu = torch.cuda.device_count()
-    else:
-        torch.cuda.set_device(args.local_rank)
-        device = torch.device("cuda", args.local_rank)
-        n_gpu = 1
-        # Initializes the distributed backend which will take care of sychronizing nodes/GPUs
-        torch.distributed.init_process_group(backend='nccl')
-    print("device: {} n_gpu: {}, distributed training: {}, 16-bits training: {}".format(
-        device, n_gpu, bool(args.local_rank != -1), args.fp16))
-
-    seg_model_checkpoint = torch.load(args.eval_model)
-    seg_model = WMSeg.from_spec(seg_model_checkpoint['spec'], seg_model_checkpoint['state_dict'])
-
-    if args.fp16:
-        seg_model.half()
-    seg_model.to(device)
-    if args.local_rank != -1:
-        try:
-            from apex.parallel import DistributedDataParallel as DDP
-        except ImportError:
-            raise ImportError(
-                "Please install apex from https://www.github.com/nvidia/apex to use distributed and fp16 training.")
-
-        seg_model = DDP(seg_model)
-    elif n_gpu > 1:
-        seg_model = torch.nn.DataParallel(seg_model)
-
-    eval_examples = seg_model.load_data(args.eval_data_path, flag='test')
-
-    seg_model.to(device)
-
-    seg_model.eval()
-    eval_loss, eval_accuracy = 0, 0
-    nb_eval_steps, nb_eval_examples = 0, 0
-    y_true = []
-    y_pred = []
-    label_map = {v: k for k, v in seg_model.labelmap.items()}
-    num_labels = seg_model.num_labels
-    for start_index in tqdm(range(0, len(eval_examples), args.eval_batch_size)):
-        eval_batch_examples = eval_examples[start_index: min(start_index + args.eval_batch_size,
-                                                             len(eval_examples))]
-        eval_features = seg_model.convert_examples_to_features(eval_batch_examples)
-
-        input_ids, input_mask, l_mask, label_ids, matching_matrix, ngram_ids, ngram_positions, \
-        segment_ids, valid_ids, word_ids, word_mask = feature2input(args, device, eval_features)
-
-        with torch.no_grad():
-            _, tag_seq = seg_model.run(input_ids, segment_ids, input_mask, labels=label_ids,
-                                       valid_ids=valid_ids, attention_mask_label=l_mask,
-                                       word_seq=word_ids, label_value_matrix=matching_matrix,
-                                       word_mask=word_mask,
-                                       input_ngram_ids=ngram_ids, ngram_position_matrix=ngram_positions)
-
-        # logits = torch.argmax(F.log_softmax(logits, dim=2),dim=2)
-        # logits = logits.detach().cpu().numpy()
-        logits = tag_seq.to('cpu').numpy()
-        label_ids = label_ids.to('cpu').numpy()
-        input_mask = input_mask.to('cpu').numpy()
-
-        for i, label in enumerate(label_ids):
-            temp_1 = []
-            temp_2 = []
-            for j, m in enumerate(label):
-                if j == 0:
-                    continue
-                elif label_ids[i][j] == num_labels - 1:
-                    y_true.append(temp_1)
-                    y_pred.append(temp_2)
-                    break
-                else:
-                    temp_1.append(label_map[label_ids[i][j]])
-                    temp_2.append(label_map[logits[i][j]])
-
-    y_true_all = []
-    y_pred_all = []
-    sentence_all = []
-    for y_true_item in y_true:
-        y_true_all += y_true_item
-    for y_pred_item in y_pred:
-        y_pred_all += y_pred_item
-    for example, y_true_item in zip(eval_examples, y_true):
-        sen = example.text_a
-        sen = sen.strip()
-        sen = sen.split(' ')
-        if len(y_true_item) != len(sen):
-            sen = sen[:len(y_true_item)]
-        sentence_all.append(sen)
-    p, r, f = cws_evaluate_word_PRF(y_pred_all, y_true_all)
-    oov = cws_evaluate_OOV(y_pred, y_true, sentence_all, seg_model.word2id)
-
-    print("\nP: %f, R: %f, F: %f, OOV: %f", p, r, f, oov)
+    return None
 
 
 def main():

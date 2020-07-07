@@ -9,3 +9,5 @@
 /data_preprocessing/icwb2-data/
 /data_preprocessing/LDC07T36/
 /data/ctb6/
+convert.sh
+convert_model.py

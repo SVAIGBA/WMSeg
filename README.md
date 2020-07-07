@@ -9,14 +9,14 @@ We will keep updating this repository these days.
 If you use or extend our work, please cite our paper at ACL2020.
 
 ```
-@inproceedings{tian-etal-2020-joint,
-    title = "Joint Chinese Word Segmentation and Part-of-speech Tagging via Two-way Attentions of Auto-analyzed Knowledge",
-    author = "Tian, Yuanhe and Song, Yan and Ao, Xiang and Xia, Fei and Quan, Xiaojun and Zhang, Tong and Wang, Yonggang",
+@inproceedings{tian-etal-2020-improving,
+    title = "Improving Chinese Word Segmentation with Wordhood Memory Networks",
+    author = "Tian, Yuanhe and Song, Yan and Xia, Fei and Zhang, Tong and Wang, Yonggang",
     booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
     month = jul,
     year = "2020",
     address = "Online",
-    pages = "8286--8296",
+    pages = "8274--8285",
 }
 ```
 
