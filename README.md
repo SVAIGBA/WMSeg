@@ -4,6 +4,22 @@ This is the implementation of [Improving  Chinese  WordSegmentation  with  Wordh
 
 We will keep updating this repository these days.
 
+## Citation
+
+If you use or extend our work, please cite our paper at ACL2020.
+
+```
+@inproceedings{tian-etal-2020-joint,
+    title = "Joint Chinese Word Segmentation and Part-of-speech Tagging via Two-way Attentions of Auto-analyzed Knowledge",
+    author = "Tian, Yuanhe and Song, Yan and Ao, Xiang and Xia, Fei and Quan, Xiaojun and Zhang, Tong and Wang, Yonggang",
+    booktitle = "Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics",
+    month = jul,
+    year = "2020",
+    address = "Online",
+    pages = "8286--8296",
+}
+```
+
 ## Requirements
 
 Our code works with the following environment.
@@ -26,7 +42,7 @@ Run `run_sample.sh` to train a model on the small sample data under the `sample_
 
 We use [SIGHAN2005](http://sighan.cs.uchicago.edu/bakeoff2005/) and [CTB6](https://catalog.ldc.upenn.edu/LDC2007T36) in our paper.
 
-To obtain and pre-process the data, please go to `data_preprocessing` directory and run `getdata.sh` under that directory. This script will download and process the official data from SIGHAN2005. For CTB6, you need to obtain the official data first, and then put the `LDC07T36` directory under the `data_preprocessing` directory.
+To obtain and pre-process the data, please go to `data_preprocessing` directory and run `getdata.sh`. This script will download and process the official data from SIGHAN2005. For CTB6, you need to obtain the official data first, and then put the `LDC07T36` folder under the `data_preprocessing` directory.
 
 All processed data will appear in `data` directory.
 
