@@ -34,7 +34,7 @@ For BERT, please download pre-trained BERT-Base Chinese from [Google](https://gi
 
 For ZEN, you can download the pre-trained model from [here](https://github.com/sinovation/ZEN).
 
-For WMSeg, you can download the model from [here](https://github.com/SVAIGBA/WMSeg/models).
+For WMSeg, you can download the model from [here](https://github.com/SVAIGBA/WMSeg/tree/master/models).
 
 ## Run on Sample Data
 
