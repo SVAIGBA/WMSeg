@@ -114,7 +114,7 @@ class WMSeg(nn.Module):
             else:
                 self.zen_tokenizer = self.hpara['zen_tokenizer']
                 self.zen_ngram_dict = self.hpara['zen_ngram_dict']
-                self.zen = zen.modeling.ZenModel(self.hpapra['config'])
+                self.zen = zen.modeling.ZenModel(self.hpara['config'])
             hidden_size = self.zen.config.hidden_size
             self.dropout = nn.Dropout(self.zen.config.hidden_dropout_prob)
         else:
