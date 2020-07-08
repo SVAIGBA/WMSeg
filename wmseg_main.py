@@ -95,8 +95,8 @@ def train(args):
     hpara = WMSeg.init_hyper_parameters(args)
     seg_model = WMSeg(word2id, gram2id, label_map, hpara, args)
 
-    train_examples = seg_model.load_data(args.train_data_path, flag='train')
-    eval_examples = seg_model.load_data(args.eval_data_path, flag='test')
+    train_examples = seg_model.load_data(args.train_data_path)
+    eval_examples = seg_model.load_data(args.eval_data_path)
     num_labels = seg_model.num_labels
     convert_examples_to_features = seg_model.convert_examples_to_features
     feature2input = seg_model.feature2input
@@ -369,7 +369,7 @@ def test(args):
     seg_model_checkpoint = torch.load(args.eval_model)
     seg_model = WMSeg.from_spec(seg_model_checkpoint['spec'], seg_model_checkpoint['state_dict'], args)
 
-    eval_examples = seg_model.load_data(args.eval_data_path, flag='test')
+    eval_examples = seg_model.load_data(args.eval_data_path)
     convert_examples_to_features = seg_model.convert_examples_to_features
     feature2input = seg_model.feature2input
     num_labels = seg_model.num_labels

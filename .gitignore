@@ -1,7 +1,4 @@
-.idea
-./data_preprocessing/
-!./data_preprocessing/*.py
-!./data_preprocessing/*.sh
+.idea/
 /data/as/
 /data/cityu/
 /data/msr/
@@ -9,5 +6,3 @@
 /data_preprocessing/icwb2-data/
 /data_preprocessing/LDC07T36/
 /data/ctb6/
-convert.sh
-convert_model.py
