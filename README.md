@@ -2,7 +2,7 @@
 
 This is the implementation of [Improving  Chinese  WordSegmentation  with  Wordhood  Memory  Networks](https://www.aclweb.org/anthology/2020.acl-main.734/) at ACL2020.
 
-We will keep updating this repository these days.
+You can e-mail Yuanhe Tian at `yhtian@uw.edu` or Guimin Chen at `chenguimin@chuangxin.com`, if you have any questions.
 
 ## Citation
 
@@ -50,17 +50,35 @@ All processed data will appear in `data` directory.
 
 ## Training and Testing
 
-You can find the command lines to train and test model on a specific dataset in `run.sh`.
+You can find the command lines to train and test models on a specific dataset in `run.sh`.
 
 Here are some important parameters:
 
-* `--do_train`: train the model
-* `--do_test`: test the model
-* `--use_bert`: use BERT as encoder
-* `--use_zen`: use ZEN as encoder
-* `--bert_model`: the directory of pre-trained BERT/ZEN model
-* `--use_memory`: use memory
-* `--decoder`: use `crf` or `softmax` as the decoder
-* `--ngram_flag`: use `av`, `dlg`, or `pmi` to construct the lexicon N
-* `--model_name`: the name of model to save 
+* `--do_train`: train the model.
+* `--do_test`: test the model.
+* `--use_bert`: use BERT as encoder.
+* `--use_zen`: use ZEN as encoder.
+* `--bert_model`: the directory of pre-trained BERT/ZEN model.
+* `--use_memory`: use key-value memory networks.
+* `--decoder`: use `crf` or `softmax` as the decoder.
+* `--ngram_flag`: use `av`, `dlg`, or `pmi` to construct the lexicon N.
+* `--model_name`: the name of model to save .
 
+## Predicting
+
+`run_sample.sh` contains the command line to segment the sentences in an input file (`./sample_data/sentence.txt`).
+
+Here are some important parameters:
+
+* `--do_predict`: segment the sentences using a pre-trained WMSeg model.
+* `--input_file`: the file contains sentences to be segmented. Each line contains one sentence; you can refer to [a sample input file](./sample_data/sentence.txt) for the input format.
+* `--output_file`: the path of the output file. Words are segmented by a space.
+* `--eval_model`: the pre-trained WMSeg model to be used to segment the sentences in the input file.
+
+## To-do List
+
+* Release a toolkit using WMSeg with necessary APIs
+
+You can leave comments in the `Issues` section, if you want us to implement any functions.
+
+You can check our updates at [updates.md](./updates.md).

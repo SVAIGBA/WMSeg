@@ -1,4 +1,4 @@
-.idea/
+/.idea/
 /data/as/
 /data/cityu/
 /data/msr/
@@ -6,3 +6,6 @@
 /data_preprocessing/icwb2-data/
 /data_preprocessing/LDC07T36/
 /data/ctb6/
+convert_model.py
+convert.sh
+test.sh
