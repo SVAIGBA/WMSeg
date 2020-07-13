@@ -1,24 +1,28 @@
 
 def eval_sentence(y_pred, y, sentence, word2id):
     words = sentence.split(' ')
-    seg_true = []
     seg_pred = []
-    word_true = ''
     word_pred = ''
 
-    for i in range(len(y)):
-        word_true += words[i]
+    if y is not None:
+        word_true = ''
+        seg_true = []
+        for i in range(len(y)):
+            word_true += words[i]
+            if y[i] in ['S', 'E']:
+                if word_true not in word2id:
+                    word_true = '*' + word_true + '*'
+                seg_true.append(word_true)
+                word_true = ''
+        seg_true_str = ' '.join(seg_true)
+    else:
+        seg_true_str = None
+
+    for i in range(len(y_pred)):
         word_pred += words[i]
-        if y[i] in ['S', 'E']:
-            if word_true not in word2id:
-                word_true = '*' + word_true + '*'
-            seg_true.append(word_true)
-            word_true = ''
         if y_pred[i] in ['S', 'E']:
             seg_pred.append(word_pred)
             word_pred = ''
-
-    seg_true_str = ' '.join(seg_true)
     seg_pred_str = ' '.join(seg_pred)
     return seg_true_str, seg_pred_str
 

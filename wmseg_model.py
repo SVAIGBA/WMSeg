@@ -192,10 +192,14 @@ class WMSeg(nn.Module):
         res.load_state_dict(model)
         return res
 
-    def load_data(self, data_path):
+    def load_data(self, data_path, do_predict=False):
 
-        flag = data_path[data_path.rfind('/')+1: data_path.rfind('.')]
-        lines = readfile(data_path, flag=flag)
+        if not do_predict:
+            flag = data_path[data_path.rfind('/')+1: data_path.rfind('.')]
+            lines = readfile(data_path, flag=flag)
+        else:
+            flag = 'predict'
+            lines = readsentence(data_path)
 
         data = []
         for sentence, label in lines:
@@ -268,11 +272,12 @@ class WMSeg(nn.Module):
                 label_1 = labellist[i]
                 for m in range(len(token)):
                     if m == 0:
-                        labels.append(label_1)
                         valid.append(1)
+                        labels.append(label_1)
                         label_mask.append(1)
                     else:
                         valid.append(0)
+
             if len(tokens) >= max_seq_length - 1:
                 tokens = tokens[0:(max_seq_length - 2)]
                 labels = labels[0:(max_seq_length - 2)]
@@ -542,5 +547,19 @@ def readfile(filename, flag):
         data.append((sentence, label))
         sentence = []
         label = []
+    return data
+
+
+def readsentence(filename):
+    data = []
+
+    with open(filename, 'r', encoding='utf8') as f:
+        lines = f.readlines()
+        for line in lines:
+            line = line.strip()
+            if line == '':
+                continue
+            label_list = ['S' for _ in range(len(line))]
+            data.append((line, label_list))
     return data
 
