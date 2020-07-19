@@ -63,7 +63,7 @@ Here are some important parameters:
 * `--decoder`: use `crf` or `softmax` as the decoder.
 * `--ngram_flag`: use `av`, `dlg`, or `pmi` to construct the lexicon N.
 * `--av_threshold`: when using `av` to construct the lexicon N, n-grams whose AV score is lower than the threshold will be excluded from the lexicon N.
-* `--ngram_num_threshold`: n-grams whose frequency is lower than the threshold will be excluded from the lexicon N. Note that, when the threshold is set to 1, no n-gram is filtered out by its frequency. We therefore do NOT recommend you to use 1 as the n-gram frequency threshold.
+* `--ngram_num_threshold`: n-grams whose frequency is lower than the threshold will be excluded from the lexicon N. Note that, when the threshold is set to 1, no n-gram is filtered out by its frequency. We therefore **DO NOT** recommend you to use 1 as the n-gram frequency threshold.
 * `--model_name`: the name of model to save.
 
 ## Predicting
