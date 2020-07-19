@@ -62,7 +62,9 @@ Here are some important parameters:
 * `--use_memory`: use key-value memory networks.
 * `--decoder`: use `crf` or `softmax` as the decoder.
 * `--ngram_flag`: use `av`, `dlg`, or `pmi` to construct the lexicon N.
-* `--model_name`: the name of model to save .
+* `--av_threshold`: when using `av` to construct the lexicon N, n-grams whose AV score is lower than the threshold will be excluded from the lexicon N.
+* `--ngram_num_threshold`: n-grams whose frequency is lower than the threshold will be excluded from the lexicon N.
+* `--model_name`: the name of model to save.
 
 ## Predicting
 

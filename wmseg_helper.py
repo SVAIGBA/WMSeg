@@ -53,8 +53,7 @@ class Find_Words:
                 else:
                     self.words[s] += 1 #否则断开，前述片段作为一个词来统计
                     s = text[i+1]
-        self.words = {i:j for i,j in self.words.items() if j > self.min_count and 6 > len(i) > 1} #最后再次根据频数过滤
-        # self.words = {i: j for i, j in self.words.items() if j >= self.min_count}  # 最后再次根据频数过滤
+        self.words = {i:j for i,j in self.words.items() if j >= self.min_count and 6 > len(i) > 1}
 
 
 def read_tsv(file_path):
@@ -173,7 +172,7 @@ def dlg(train_path, eval_path, min_freq):
             else:
                 new_dlg_dict[gram] += 1
 
-    new_dlg_dict_2 = {gram: c for gram, c in new_dlg_dict.items() if c > min_freq}
+    new_dlg_dict_2 = {gram: c for gram, c in new_dlg_dict.items() if c >= min_freq}
 
     return new_dlg_dict_2
 
@@ -301,7 +300,7 @@ def av(train_path, eval_path, min_freq, av_threshold=5):
         avl = len(av_dict['l'])
         avr = len(av_dict['r'])
         av = min(avl, avr)
-        if av > av_threshold and n_gram_dict[ngram] > min_freq:
+        if av >= av_threshold and n_gram_dict[ngram] >= min_freq:
             remaining_ngram[ngram] = n_gram_dict[ngram]
 
     return remaining_ngram

@@ -83,6 +83,11 @@ def train(args):
     logger.info('# of word in train: %d: ' % len(word2id))
 
     if args.use_memory:
+        if args.ngram_num_threshold <= 1:
+            raise Warning('The threshold of n-gram frequency is set to %d. '
+                          'No n-grams will be filtered out by frequency. '
+                          'We only filter out n-grams whose frequency is lower than that threshold!'
+                          % args.ngram_num_threshold)
         gram2id = get_gram2id(args.train_data_path, args.eval_data_path,
                               args.ngram_num_threshold, args.ngram_flag, args.av_threshold)
         logger.info('# of n-gram in memory: %d' % len(gram2id))
