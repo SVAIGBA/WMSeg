@@ -2,7 +2,7 @@
 
 The pre-trained WMSeg models on different datasets with BERT and ZEN encoder. You can download the models and run them on the corresponding datasets to obtain the results reported in our paper.
 
-| Section | BaiduNetDisk | Google | Description |
+| Section | BaiduNetDisk | GoogleDrive | Description |
 |-|-|-|-|
 |WMSeg.ZEN.MSR| [download](https://pan.baidu.com/s/1BA5hOflRE_fzbvgzwZEE5w) (password: h3rf)| [download](https://drive.google.com/file/d/1u3ebr0dKLCJhHktoc67f_AsM12_Qrb-2/view?usp=sharing) | WMSeg model trained on **MSR** dataset using **ZEN** as encoder |
 |WMSeg.ZEN.PKU| [download](https://pan.baidu.com/s/1MjD0zPbA7nFWXZpHdJV-Vg) (password: l03l)| [download](https://drive.google.com/file/d/1IcJ49qRTWc8gkM0XNxHnLQJGVEKLHjfT/view?usp=sharing) | WMSeg model trained on **PKU** dataset using **ZEN** as encoder |
