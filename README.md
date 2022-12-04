@@ -2,7 +2,7 @@
 
 This is the implementation of [Improving  Chinese  Word  Segmentation  with  Wordhood  Memory  Networks](https://www.aclweb.org/anthology/2020.acl-main.734/) at ACL2020.
 
-Please contact us at `yhtian@uw.edu` or `cuhksz.nlp@gmail.com` if you have any questions.
+Please contact us at `yhtian@uw.edu` if you have any questions.
 
 ## Citation
 
