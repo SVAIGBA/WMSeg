@@ -6,6 +6,10 @@ Please contact Yuanhe Tian at `yhtian@uw.edu` if you have any questions.
 
 **Visit our [homepage](https://github.com/synlp/.github) to find more our recent research and softwares for NLP (e.g., pre-trained LM, POS tagging, NER, sentiment analysis, relation extraction, datasets, etc.).**
 
+## Important
+
+We are improving the project. For updates, please visit [HERE](https://github.com/synlp/WMSeg).
+
 ## Citation
 
 If you use or extend our work, please cite our paper at ACL2020.
