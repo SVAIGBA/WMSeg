@@ -85,7 +85,7 @@ Here are some important parameters:
 
 ## To-do List
 
-* Release a toolkit using WMSeg with necessary APIs
+* Check our new [GitHub Repository](https://github.com/synlp/WMSeg) for upgrades of WMSeg.
 
 You can leave comments in the `Issues` section, if you want us to implement any functions.
 
