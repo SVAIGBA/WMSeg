@@ -97,7 +97,7 @@ class CRF(nn.Module):
             # partition = utils.switch(partition, cur_partition, mask[idx].view(bat_size, 1).expand(bat_size, self.tagset_size)).view(bat_size, -1)
             mask_idx = mask[idx, :].view(batch_size, 1).expand(batch_size, tag_size)
 
-            mask_idx = mask_idx.byte()
+            mask_idx = mask_idx.bool()
             ## effective updated partition part, only keep the partition value of mask value = 1
             masked_cur_partition = cur_partition.masked_select(mask_idx)
             ## let mask_idx broadcastable, to disable warning
@@ -143,7 +143,7 @@ class CRF(nn.Module):
         partition_history = list()
         #  reverse mask (bug for mask = 1- mask, use this as alternative choice)
         # mask = 1 + (-1)*mask
-        mask = (1 - mask.long()).byte()
+        mask = (1 - mask.long()).bool()
         _, inivalues = next(seq_iter)  # bat_size * from_target_size * to_target_size
         # only need start from start_tag
         partition = inivalues[:, START_TAG, :].clone().view(batch_size, tag_size)  # bat_size * to_target_size
@@ -253,7 +253,7 @@ class CRF(nn.Module):
         ### need convert tags id to search from 400 positions of scores
         tg_energy = torch.gather(scores.view(seq_len, batch_size, -1), 2, new_tags).view(seq_len, batch_size)  # seq_len * bat_size
         ## mask transpose to (seq_len, batch_size)
-        tg_energy = tg_energy.masked_select(mask.transpose(1,0).byte())
+        tg_energy = tg_energy.masked_select(mask.transpose(1,0).bool())
 
         # ## calculate the score from START_TAG to first label
         # start_transition = self.transitions[START_TAG,:].view(1, tag_size).expand(batch_size, tag_size)
@@ -307,7 +307,7 @@ class CRF(nn.Module):
         partition_history = list()
         ##  reverse mask (bug for mask = 1- mask, use this as alternative choice)
         # mask = 1 + (-1)*mask
-        mask =  (1 - mask.long()).byte()
+        mask =  (1 - mask.long()).bool()
         _, inivalues = next(seq_iter)  # bat_size * from_target_size * to_target_size
         # only need start from start_tag
         partition = inivalues[:, START_TAG, :].clone()  # bat_size * to_target_size

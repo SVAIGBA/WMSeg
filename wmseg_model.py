@@ -259,7 +259,7 @@ class WMSeg(nn.Module):
         tokenizer = self.bert_tokenizer if self.bert_tokenizer is not None else self.zen_tokenizer
 
         for (ex_index, example) in enumerate(examples):
-            textlist = example.text_a.split(' ')
+            textlist = example.text_a.replace('       ', '  ').replace('     ', '  ').replace('   ', '  ').split(' ')
             labellist = example.label
             tokens = []
             labels = []
